@@ -1,27 +1,27 @@
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
 const cssHandler = require('./cssResponses.js');
-// TODO: require any necessary handlers
+const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+const urlStruct = {
+  '/': htmlHandler.getIndex,
+  '/style.css': cssHandler.getStyle,
+  defaultFunc: htmlHandler.getIndex
+}
+
 // Handles requests from the server
 const onRequest = (request, response) => {
-  console.log(request.url);
+  // Parse the url from the request
+  const parsedURL = url.parse(request.url);
 
-  // TODO: make a switch based on 'request.url' to go to different pages
-  switch (request.url) {
-    case '/':
-      htmlHandler.getIndex(request, response);
-      break;
-    case '/style.css':
-      cssHandler.getStyle(request, response);
-      break;
-    default:
-      // TODO: Change the default case to a 404
-      htmlHandler.getIndex(request, response);
-      break;
-  }
+  // Get the accept headers
+  const acceptedTypes = request.headers.accept.split(',');
+
+  // If the parsed url matches one of the urls in 'urlStruct' call its corresponding function
+  // Otherwise, send them to the 404 page
+  urlStruct[parsedURL.pathname](request, response, acceptedTypes) ?? urlStruct.defaultFunc(request, response, acceptedTypes);
 };
 
 http.createServer(onRequest).listen(port, () => {
