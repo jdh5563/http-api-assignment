@@ -1,4 +1,5 @@
 const http = require('http');
+const url = require('url');
 const htmlHandler = require('./htmlResponses.js');
 const cssHandler = require('./cssResponses.js');
 const jsonHandler = require('./jsonResponses.js');
@@ -8,8 +9,14 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': cssHandler.getStyle,
-  defaultFunc: htmlHandler.getIndex
-}
+  '/success': jsonHandler.success,
+  '/badRequest': jsonHandler.badRequest,
+  '/unauthorized': jsonHandler.unauthorized,
+  '/forbidden': jsonHandler.forbidden,
+  '/internal': jsonHandler.internal,
+  '/notImplemented': jsonHandler.notImplemented,
+  notFound: jsonHandler.notFound,
+};
 
 // Handles requests from the server
 const onRequest = (request, response) => {
@@ -21,7 +28,8 @@ const onRequest = (request, response) => {
 
   // If the parsed url matches one of the urls in 'urlStruct' call its corresponding function
   // Otherwise, send them to the 404 page
-  urlStruct[parsedURL.pathname](request, response, acceptedTypes) ?? urlStruct.defaultFunc(request, response, acceptedTypes);
+  const func = urlStruct[parsedURL.pathname] || urlStruct.notFound;
+  func(request, response, acceptedTypes);
 };
 
 http.createServer(onRequest).listen(port, () => {
