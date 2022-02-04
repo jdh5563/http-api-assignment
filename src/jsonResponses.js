@@ -144,7 +144,7 @@ const forbidden = (request, response, acceptedTypes) => {
   };
 
   // send our json with a success status code
-  respondJSON(request, response, 403, responseJSON);
+  return respondJSON(request, response, 403, responseJSON);
 };
 
 const internal = (request, response, acceptedTypes) => {
@@ -168,7 +168,7 @@ const internal = (request, response, acceptedTypes) => {
   };
 
   // send our json with a success status code
-  respondJSON(request, response, 500, responseJSON);
+  return respondJSON(request, response, 500, responseJSON);
 };
 
 const notImplemented = (request, response, acceptedTypes) => {
@@ -192,7 +192,7 @@ const notImplemented = (request, response, acceptedTypes) => {
   };
 
   // send our json with a success status code
-  respondJSON(request, response, 501, responseJSON);
+  return respondJSON(request, response, 501, responseJSON);
 };
 
 // function to show not found error
@@ -217,7 +217,7 @@ const notFound = (request, response, acceptedTypes) => {
   };
 
   // return our json with a 404 not found error code
-  respondJSON(request, response, 404, responseJSON);
+  return respondJSON(request, response, 404, responseJSON);
 };
 
 // exports to set functions to public.
