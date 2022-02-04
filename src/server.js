@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
 const cssHandler = require('./cssResponses.js');
 const jsonHandler = require('./jsonResponses.js');
@@ -26,10 +27,12 @@ const onRequest = (request, response) => {
   // Get the accept headers
   const acceptedTypes = request.headers.accept.split(',');
 
+  const params = query.parse(parsedURL.query);
+
   // If the parsed url matches one of the urls in 'urlStruct' call its corresponding function
   // Otherwise, send them to the 404 page
   const func = urlStruct[parsedURL.pathname] || urlStruct.notFound;
-  func(request, response, acceptedTypes);
+  func(request, response, acceptedTypes, params);
 };
 
 http.createServer(onRequest).listen(port, () => {

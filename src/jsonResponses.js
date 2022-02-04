@@ -37,11 +37,35 @@ const success = (request, response, acceptedTypes) => {
 
 // function to show a bad request without the correct parameters
 const badRequest = (request, response, acceptedTypes, params) => {
+  // if the client's most preferred type (first option listed)
+  // is xml, then respond xml instead
+  if (acceptedTypes[0] === 'text/xml') {
+    // if the request does not contain a valid=true query parameter
+    if (!params.valid || params.valid !== 'true') {
+      // create a valid XML string with name and age tags.
+      let responseXML = '<response>';
+      responseXML += '<message>Missing valid query parameter set to true</message>';
+      responseXML += '<id>badRequest</id>';
+      responseXML += '</response>';
+      // return our json with a 400 bad request code
+      return respondXML(request, response, 400, responseXML);
+    }
+
+    // create a valid XML string with name and age tags.
+    let responseXML = '<response>';
+    responseXML += '<message>This request has the required parameters</message>';
+    responseXML += '</response>';
+
+    // return response passing out string and content type
+    return respondXML(request, response, 200, responseXML);
+  }
+
   // message to send
   const responseJSON = {
     message: 'This request has the required parameters',
   };
 
+  console.log(params);
   // if the request does not contain a valid=true query parameter
   if (!params.valid || params.valid !== 'true') {
     // set our error message
@@ -57,6 +81,29 @@ const badRequest = (request, response, acceptedTypes, params) => {
 };
 
 const unauthorized = (request, response, acceptedTypes, params) => {
+  // if the client's most preferred type (first option listed)
+  // is xml, then respond xml instead
+  if (acceptedTypes[0] === 'text/xml') {
+    // if the request does not contain a valid=true query parameter
+    if (!params.loggedIn || params.loggedIn !== 'true') {
+      // create a valid XML string with name and age tags.
+      let responseXML = '<response>';
+      responseXML += '<message>Missing loggedIn query parameter set to yes</message>';
+      responseXML += '<id>unauthorized</id>';
+      responseXML += '</response>';
+      // return our json with a 400 bad request code
+      return respondXML(request, response, 401, responseXML);
+    }
+
+    // create a valid XML string with name and age tags.
+    let responseXML = '<response>';
+    responseXML += '<message>This request has the required parameters</message>';
+    responseXML += '</response>';
+
+    // return response passing out string and content type
+    return respondXML(request, response, 200, responseXML);
+  }
+
   // message to send
   const responseJSON = {
     message: 'This request has the required parameters',
@@ -67,7 +114,7 @@ const unauthorized = (request, response, acceptedTypes, params) => {
     // set our error message
     responseJSON.message = 'Missing loggedIn query parameter set to yes';
     // give the error a consistent id
-    responseJSON.id = 'badRequest';
+    responseJSON.id = 'unauthorized';
     // return our json with a 401 unauthorized code
     return respondJSON(request, response, 401, responseJSON);
   }
@@ -77,6 +124,19 @@ const unauthorized = (request, response, acceptedTypes, params) => {
 };
 
 const forbidden = (request, response, acceptedTypes) => {
+  // if the client's most preferred type (first option listed)
+  // is xml, then respond xml instead
+  if (acceptedTypes[0] === 'text/xml') {
+    // create a valid XML string with name and age tags.
+    let responseXML = '<response>';
+    responseXML += '<message>You do not have access to this content.</message>';
+    responseXML += '<id>forbidden</id>';
+    responseXML += '</response>';
+
+    // return response passing out string and content type
+    return respondXML(request, response, 403, responseXML);
+  }
+
   // message to send
   const responseJSON = {
     message: 'You do not have access to this content.',
@@ -88,6 +148,19 @@ const forbidden = (request, response, acceptedTypes) => {
 };
 
 const internal = (request, response, acceptedTypes) => {
+  // if the client's most preferred type (first option listed)
+  // is xml, then respond xml instead
+  if (acceptedTypes[0] === 'text/xml') {
+    // create a valid XML string with name and age tags.
+    let responseXML = '<response>';
+    responseXML += '<message>Internal Server Error. Something went wrong</message>';
+    responseXML += '<id>internalError</id>';
+    responseXML += '</response>';
+
+    // return response passing out string and content type
+    return respondXML(request, response, 500, responseXML);
+  }
+
   // message to send
   const responseJSON = {
     message: 'Internal Server Error. Something went wrong',
@@ -99,6 +172,19 @@ const internal = (request, response, acceptedTypes) => {
 };
 
 const notImplemented = (request, response, acceptedTypes) => {
+  // if the client's most preferred type (first option listed)
+  // is xml, then respond xml instead
+  if (acceptedTypes[0] === 'text/xml') {
+    // create a valid XML string with name and age tags.
+    let responseXML = '<response>';
+    responseXML += '<message>A get request for this page has not been implemented yet. Check again later for updated content.</message>';
+    responseXML += '<id>notImplemented</id>';
+    responseXML += '</response>';
+
+    // return response passing out string and content type
+    return respondXML(request, response, 501, responseXML);
+  }
+
   // message to send
   const responseJSON = {
     message: 'A get request for this page has not been implemented yet. Check again later for updated content.',
@@ -111,6 +197,19 @@ const notImplemented = (request, response, acceptedTypes) => {
 
 // function to show not found error
 const notFound = (request, response, acceptedTypes) => {
+  // if the client's most preferred type (first option listed)
+  // is xml, then respond xml instead
+  if (acceptedTypes[0] === 'text/xml') {
+    // create a valid XML string with name and age tags.
+    let responseXML = '<response>';
+    responseXML += '<message>The page you are looking for was not found.</message>';
+    responseXML += '<id>notFound</id>';
+    responseXML += '</response>';
+
+    // return response passing out string and content type
+    return respondXML(request, response, 404, responseXML);
+  }
+
   // error message with a description and consistent error id
   const responseJSON = {
     message: 'The page you are looking for was not found.',
