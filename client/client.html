@@ -11,6 +11,7 @@
     let statusCode;
     let message;
 
+    // Handles displaying responses
     const handleResponse = async (response) => {
       const responseText = await response.text();
 
@@ -18,23 +19,26 @@
 
       let contentType = response.headers.get('Content-Type');
 
-      //Grab the content section from the HTML so we can put things on the screen.
+      // Grab the content section from the HTML so we can put things on the screen.
       const content = document.querySelector('#content');
 
-      //If the server sent back json
+      // If the server sent back json
       if(contentType === 'application/json') {
-        //Parse the json back into a javascript object, and display the data.
+        // Parse the json back into a javascript object, and display the data.
         let parsedResponse = JSON.parse(responseText);
         statusCode.innerHTML = `<b>${codes.options[codes.selectedIndex].textContent}</b>`;
         message.textContent = `Message: ${parsedResponse.message}`;
-      } else if (contentType === 'text/xml') { //If the server sent back xml
-        //Parse the xml into a document and select the data out.
+      }
+      // If the server sent back xml
+      else if (contentType === 'text/xml') {
+        // Parse the xml into a document and select the data out.
         let parsedResponse = new window.DOMParser().parseFromString(responseText, 'text/xml');
         statusCode.innerHTML = `<b>${codes.options[codes.selectedIndex].textContent}</b>`;
         message.textContent = `Message: ${parsedResponse.querySelector('message').textContent}`;
       } 
     };
 
+    // Send a fetch request for the given url and handle the response
     const sendFetchRequest = async (url, acceptedType) => {
       const options = {
         method: 'GET',
@@ -44,6 +48,7 @@
       handleResponse(await fetch(url, options));
     };
 
+    // Set up all necessary elements
     const init = () => {
       send = document.querySelector('#send');
       codes = document.querySelector('#page');

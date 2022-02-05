@@ -22,7 +22,7 @@ const success = (request, response, acceptedTypes) => {
     responseXML += '<message>This is a successful response</message>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 200, responseXML);
   }
 
@@ -35,28 +35,28 @@ const success = (request, response, acceptedTypes) => {
   return respondJSON(request, response, 200, responseJSON);
 };
 
-// function to show a bad request without the correct parameters
+// function to show a bad request
 const badRequest = (request, response, acceptedTypes, params) => {
   // if the client's most preferred type (first option listed)
   // is xml, then respond xml instead
   if (acceptedTypes[0] === 'text/xml') {
     // if the request does not contain a valid=true query parameter
     if (!params.valid || params.valid !== 'true') {
-      // create a valid XML string with name and age tags.
+      // create a valid XML string with message and id tags.
       let responseXML = '<response>';
       responseXML += '<message>Missing valid query parameter set to true</message>';
       responseXML += '<id>badRequest</id>';
       responseXML += '</response>';
-      // return our json with a 400 bad request code
+      // return our XML with a 400 bad request code
       return respondXML(request, response, 400, responseXML);
     }
 
-    // create a valid XML string with name and age tags.
+    // create a valid XML string with message tag.
     let responseXML = '<response>';
     responseXML += '<message>This request has the required parameters</message>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 200, responseXML);
   }
 
@@ -65,7 +65,6 @@ const badRequest = (request, response, acceptedTypes, params) => {
     message: 'This request has the required parameters',
   };
 
-  console.log(params);
   // if the request does not contain a valid=true query parameter
   if (!params.valid || params.valid !== 'true') {
     // set our error message
@@ -80,27 +79,28 @@ const badRequest = (request, response, acceptedTypes, params) => {
   return respondJSON(request, response, 200, responseJSON);
 };
 
+// function to show unauthorized error
 const unauthorized = (request, response, acceptedTypes, params) => {
   // if the client's most preferred type (first option listed)
   // is xml, then respond xml instead
   if (acceptedTypes[0] === 'text/xml') {
     // if the request does not contain a valid=true query parameter
     if (!params.loggedIn || params.loggedIn !== 'true') {
-      // create a valid XML string with name and age tags.
+      // create a valid XML string with message and id tags.
       let responseXML = '<response>';
       responseXML += '<message>Missing loggedIn query parameter set to yes</message>';
       responseXML += '<id>unauthorized</id>';
       responseXML += '</response>';
-      // return our json with a 400 bad request code
+      // return our json with a 401 unauthorized code
       return respondXML(request, response, 401, responseXML);
     }
 
-    // create a valid XML string with name and age tags.
+    // create a valid XML string with message tag.
     let responseXML = '<response>';
     responseXML += '<message>This request has the required parameters</message>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 200, responseXML);
   }
 
@@ -123,6 +123,7 @@ const unauthorized = (request, response, acceptedTypes, params) => {
   return respondJSON(request, response, 200, responseJSON);
 };
 
+// function to show forbidden error
 const forbidden = (request, response, acceptedTypes) => {
   // if the client's most preferred type (first option listed)
   // is xml, then respond xml instead
@@ -133,7 +134,7 @@ const forbidden = (request, response, acceptedTypes) => {
     responseXML += '<id>forbidden</id>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 403, responseXML);
   }
 
@@ -143,10 +144,11 @@ const forbidden = (request, response, acceptedTypes) => {
     id: 'forbidden',
   };
 
-  // send our json with a success status code
+  // send our json with a forbidden status code
   return respondJSON(request, response, 403, responseJSON);
 };
 
+// function to show internal error
 const internal = (request, response, acceptedTypes) => {
   // if the client's most preferred type (first option listed)
   // is xml, then respond xml instead
@@ -157,7 +159,7 @@ const internal = (request, response, acceptedTypes) => {
     responseXML += '<id>internalError</id>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 500, responseXML);
   }
 
@@ -167,10 +169,11 @@ const internal = (request, response, acceptedTypes) => {
     id: 'internalError',
   };
 
-  // send our json with a success status code
+  // send our json with a internalError status code
   return respondJSON(request, response, 500, responseJSON);
 };
 
+// function to show notImplemented error
 const notImplemented = (request, response, acceptedTypes) => {
   // if the client's most preferred type (first option listed)
   // is xml, then respond xml instead
@@ -181,7 +184,7 @@ const notImplemented = (request, response, acceptedTypes) => {
     responseXML += '<id>notImplemented</id>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 501, responseXML);
   }
 
@@ -191,7 +194,7 @@ const notImplemented = (request, response, acceptedTypes) => {
     id: 'notImplemented',
   };
 
-  // send our json with a success status code
+  // send our json with a notImplemented status code
   return respondJSON(request, response, 501, responseJSON);
 };
 
@@ -206,7 +209,7 @@ const notFound = (request, response, acceptedTypes) => {
     responseXML += '<id>notFound</id>';
     responseXML += '</response>';
 
-    // return response passing out string and content type
+    // return response with the new XML responseText
     return respondXML(request, response, 404, responseXML);
   }
 

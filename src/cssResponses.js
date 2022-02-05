@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-// The 3 pages the user can go to
+// The CSS file
 const style = fs.readFileSync(`${__dirname}/../client/style.css`);
 
-// Getters that send the user to the correct page
+// Writes the style into the response
 const getStyle = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/css' });
   response.write(style);

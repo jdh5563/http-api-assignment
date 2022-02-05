@@ -7,6 +7,7 @@ const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+// Calls different functions depending on what was requested
 const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': cssHandler.getStyle,
@@ -27,6 +28,7 @@ const onRequest = (request, response) => {
   // Get the accept headers
   const acceptedTypes = request.headers.accept.split(',');
 
+  // Get any query parameters
   const params = query.parse(parsedURL.query);
 
   // If the parsed url matches one of the urls in 'urlStruct' call its corresponding function
